@@ -62,13 +62,16 @@ use App\Http\Controllers\Admin\NotificationAlertController;
 use App\Http\Controllers\Admin\CreditBalanceReportController;
 use App\Http\Controllers\Admin\AdministratorAddressController;
 use App\Http\Controllers\Table\OrderController as TableOrderController;
+use App\Http\Controllers\Frontend\OfferController as FrontendOfferController;
 use App\Http\Controllers\Frontend\ItemController as FrontendItemController;
+use App\Http\Controllers\Frontend\ItemCategoryController as FrontendItemCategoryController;
 use App\Http\Controllers\Frontend\PageController as FrontendPageController;
 use App\Http\Controllers\Frontend\BranchController as FrontendBranchController;
 use App\Http\Controllers\Admin\TableOrderController as AdminTableOrderController;
 use App\Http\Controllers\Frontend\LanguageController as FrontendLanguageController;
 use App\Http\Controllers\Table\DiningTableController as TableDiningTableController;
 use App\Http\Controllers\Table\ItemCategoryController as TableItemCategoryController;
+
 
 
 /*
@@ -493,6 +496,17 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
 Route::prefix('frontend')->name('frontend.')->middleware(['installed', 'apiKey', 'localization'])->group(function () {
     Route::prefix('setting')->name('setting.')->group(function () {
         Route::get('/', [SettingController::class, 'index']);
+    });
+
+    Route::prefix('item-category')->name('item-category.')->group(function () {
+        Route::get('/', [FrontendItemCategoryController::class, 'index']);
+        Route::get('/show/{itemCategory:slug}', [FrontendItemCategoryController::class, 'show']);
+    });
+
+    Route::prefix('offer')->name('offer.')->group(function () {
+        Route::get('/', [FrontendOfferController::class, 'index']);
+        Route::get('/show/{slug}', [FrontendOfferController::class, 'offerItems']);
+        Route::get('/today', [FrontendOfferController::class, 'offerItemByDate']);
     });
 
     Route::prefix('page')->name('page.')->group(function () {
