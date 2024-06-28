@@ -61,6 +61,7 @@ use App\Http\Controllers\Admin\EmployeeAddressController;
 use App\Http\Controllers\Admin\NotificationAlertController;
 use App\Http\Controllers\Admin\CreditBalanceReportController;
 use App\Http\Controllers\Admin\AdministratorAddressController;
+use App\Http\Controllers\Frontend\OrderController as FrontendOrderController;
 use App\Http\Controllers\Table\OrderController as TableOrderController;
 use App\Http\Controllers\Frontend\OfferController as FrontendOfferController;
 use App\Http\Controllers\Frontend\ItemController as FrontendItemController;
@@ -529,6 +530,13 @@ Route::prefix('frontend')->name('frontend.')->middleware(['installed', 'apiKey',
         Route::get('/', [FrontendItemController::class, 'index']);
         Route::get('/featured-items', [FrontendItemController::class, 'featuredItems']);
         Route::get('/popular-items', [FrontendItemController::class, 'mostPopularItems']);
+    });
+
+    Route::prefix('order')->name('order.')->middleware(['auth:sanctum'])->group(function () {
+        Route::get('/', [FrontendOrderController::class, 'index']);
+        Route::get('/show/{frontendOrder}', [FrontendOrderController::class, 'show']);
+        Route::post('/', [FrontendOrderController::class, 'store']);
+        Route::post('/change-status/{frontendOrder}', [FrontendOrderController::class, 'changeStatus']);
     });
 
     Route::prefix('device-token')->name('device-token.')->middleware(['auth:sanctum'])->group(function () {
